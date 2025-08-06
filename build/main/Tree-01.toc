@@ -1,0 +1,11 @@
+('sounds',
+ 'sounds',
+ [],
+ 'DATA',
+ [('sounds\\default_alarm.wav', 'sounds\\default_alarm.wav', 'DATA'),
+  ('sounds\\mixkit-rooster-crowing-in-the-morning-2462.wav',
+   'sounds\\mixkit-rooster-crowing-in-the-morning-2462.wav',
+   'DATA'),
+  ('sounds\\user\\mixkit-retro-game-emergency-alarm-1000.wav',
+   'sounds\\user\\mixkit-retro-game-emergency-alarm-1000.wav',
+   'DATA')])

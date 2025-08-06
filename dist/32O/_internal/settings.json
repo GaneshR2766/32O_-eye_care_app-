@@ -1,0 +1,9 @@
+{
+  "selected_alarm": "default_alarm.wav",
+  "user_sounds": [
+    "mixkit-rooster-crowing-in-the-morning-2462.wav",
+    "mixkit-retro-game-emergency-alarm-1000.wav"
+  ],
+  "nature_sound": true,
+  "alarm_loop_style": 1
+}
