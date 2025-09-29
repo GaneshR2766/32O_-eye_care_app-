@@ -18,17 +18,17 @@
   <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/main.py" type="text/plain"><tt>main.py</tt></a>
 <span class="moduletype">Script</span>  <div class="import">
 imports:
-    <a href="#PIL">PIL</a>
- &#8226;   <a href="#PIL.Image">PIL.Image</a>
- &#8226;   <a href="#PIL.ImageTk">PIL.ImageTk</a>
- &#8226;   <a href="#_collections_abc">_collections_abc</a>
+    <a href="#_collections_abc">_collections_abc</a>
  &#8226;   <a href="#_weakrefset">_weakrefset</a>
  &#8226;   <a href="#abc">abc</a>
  &#8226;   <a href="#codecs">codecs</a>
  &#8226;   <a href="#collections">collections</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
+ &#8226;   <a href="#components.timer">components.timer</a>
+ &#8226;   <a href="#config.paths">config.paths</a>
+ &#8226;   <a href="#config.settings">config.settings</a>
  &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#customtkinter">customtkinter</a>
- &#8226;   <a href="#cv2">cv2</a>
  &#8226;   <a href="#encodings">encodings</a>
  &#8226;   <a href="#encodings.aliases">encodings.aliases</a>
  &#8226;   <a href="#encodings.ascii">encodings.ascii</a>
@@ -156,7 +156,6 @@ imports:
  &#8226;   <a href="#genericpath">genericpath</a>
  &#8226;   <a href="#heapq">heapq</a>
  &#8226;   <a href="#io">io</a>
- &#8226;   <a href="#json">json</a>
  &#8226;   <a href="#keyword">keyword</a>
  &#8226;   <a href="#linecache">linecache</a>
  &#8226;   <a href="#locale">locale</a>
@@ -182,10 +181,6 @@ imports:
  &#8226;   <a href="#sre_parse">sre_parse</a>
  &#8226;   <a href="#stat">stat</a>
  &#8226;   <a href="#sys">sys</a>
- &#8226;   <a href="#threading">threading</a>
- &#8226;   <a href="#time">time</a>
- &#8226;   <a href="#tkinter">tkinter</a>
- &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
  &#8226;   <a href="#traceback">traceback</a>
  &#8226;   <a href="#types">types</a>
  &#8226;   <a href="#warnings">warnings</a>
@@ -617,8 +612,9 @@ imported by:
  &#8226;   <a href="#PIL._version">PIL._version</a>
  &#8226;   <a href="#PIL._webp">PIL._webp</a>
  &#8226;   <a href="#PIL.features">PIL.features</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
  &#8226;   <a href="#customtkinter.windows.widgets.image.ctk_image">customtkinter.windows.widgets.image.ctk_image</a>
- &#8226;   <a href="#main.py">main.py</a>
 
   </div>
 
@@ -1301,8 +1297,9 @@ imported by:
  &#8226;   <a href="#PIL.XbmImagePlugin">PIL.XbmImagePlugin</a>
  &#8226;   <a href="#PIL.XpmImagePlugin">PIL.XpmImagePlugin</a>
  &#8226;   <a href="#PIL.features">PIL.features</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
  &#8226;   <a href="#customtkinter.windows.widgets.image.ctk_image">customtkinter.windows.widgets.image.ctk_image</a>
- &#8226;   <a href="#main.py">main.py</a>
 
   </div>
 
@@ -1694,8 +1691,8 @@ imports:
 imported by:
     <a href="#PIL">PIL</a>
  &#8226;   <a href="#PIL.SpiderImagePlugin">PIL.SpiderImagePlugin</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
  &#8226;   <a href="#customtkinter.windows.widgets.image.ctk_image">customtkinter.windows.widgets.image.ctk_image</a>
- &#8226;   <a href="#main.py">main.py</a>
 
   </div>
 
@@ -6608,6 +6605,7 @@ imported by:
  &#8226;   <a href="#unittest.case">unittest.case</a>
  &#8226;   <a href="#unittest.util">unittest.util</a>
  &#8226;   <a href="#urllib.parse">urllib.parse</a>
+ &#8226;   <a href="#utils.camera">utils.camera</a>
  &#8226;   <a href="#xml.etree.ElementTree">xml.etree.ElementTree</a>
 
   </div>
@@ -6620,6 +6618,129 @@ imported by:
 <span class="moduletype">SourceModule</span>  <div class="import">
 imported by:
     <a href="#PIL.ImageColor">PIL.ImageColor</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="components"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/components/__init__.py" type="text/plain"><tt>components</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
+ &#8226;   <a href="#components.timer">components.timer</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
+ &#8226;   <a href="#components.timer">components.timer</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="components.alarm"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/components/alarm.py" type="text/plain"><tt>components.alarm</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#components">components</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#config.globals">config.globals</a>
+ &#8226;   <a href="#config.paths">config.paths</a>
+ &#8226;   <a href="#config.settings">config.settings</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#pygame">pygame</a>
+ &#8226;   <a href="#threading">threading</a>
+ &#8226;   <a href="#time">time</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#components">components</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#components.timer">components.timer</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="components.break_screen"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/components/break_screen.py" type="text/plain"><tt>components.break_screen</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#PIL">PIL</a>
+ &#8226;   <a href="#PIL.Image">PIL.Image</a>
+ &#8226;   <a href="#components">components</a>
+ &#8226;   <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
+ &#8226;   <a href="#config.globals">config.globals</a>
+ &#8226;   <a href="#config.paths">config.paths</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
+ &#8226;   <a href="#cv2">cv2</a>
+ &#8226;   <a href="#numpy">numpy</a>
+ &#8226;   <a href="#pygame">pygame</a>
+ &#8226;   <a href="#threading">threading</a>
+ &#8226;   <a href="#utils.camera">utils.camera</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#components">components</a>
+ &#8226;   <a href="#components.alarm">components.alarm</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="components.main_screen"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/components/main_screen.py" type="text/plain"><tt>components.main_screen</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#PIL">PIL</a>
+ &#8226;   <a href="#PIL.Image">PIL.Image</a>
+ &#8226;   <a href="#PIL.ImageTk">PIL.ImageTk</a>
+ &#8226;   <a href="#components">components</a>
+ &#8226;   <a href="#config.paths">config.paths</a>
+ &#8226;   <a href="#config.settings">config.settings</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#tkinter">tkinter</a>
+ &#8226;   <a href="#tkinter.filedialog">tkinter.filedialog</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#components">components</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#main.py">main.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="components.timer"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/components/timer.py" type="text/plain"><tt>components.timer</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#components">components</a>
+ &#8226;   <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#threading">threading</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#components">components</a>
+ &#8226;   <a href="#main.py">main.py</a>
 
   </div>
 
@@ -6732,6 +6853,87 @@ imports:
   <div class="import">
 imported by:
     <a href="#concurrent.futures">concurrent.futures</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="config"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/config/__init__.py" type="text/plain"><tt>config</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#config.paths">config.paths</a>
+ &#8226;   <a href="#config.settings">config.settings</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#config.globals">config.globals</a>
+ &#8226;   <a href="#config.paths">config.paths</a>
+ &#8226;   <a href="#config.settings">config.settings</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="config.globals"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/config/globals.py" type="text/plain"><tt>config.globals</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#config">config</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="config.paths"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/config/paths.py" type="text/plain"><tt>config.paths</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#config">config</a>
+ &#8226;   <a href="#os">os</a>
+ &#8226;   <a href="#sys">sys</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
+ &#8226;   <a href="#config">config</a>
+ &#8226;   <a href="#config.settings">config.settings</a>
+ &#8226;   <a href="#main.py">main.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="config.settings"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/config/settings.py" type="text/plain"><tt>config.settings</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#config">config</a>
+ &#8226;   <a href="#config.paths">config.paths</a>
+ &#8226;   <a href="#json">json</a>
+ &#8226;   <a href="#os">os</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
+ &#8226;   <a href="#config">config</a>
+ &#8226;   <a href="#main.py">main.py</a>
 
   </div>
 
@@ -7229,7 +7431,9 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#customtkinter">customtkinter</a>
+    <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
  &#8226;   <a href="#customtkinter.windows">customtkinter.windows</a>
  &#8226;   <a href="#customtkinter.windows.widgets.core_widget_classes.ctk_base_class">customtkinter.windows.widgets.core_widget_classes.ctk_base_class</a>
  &#8226;   <a href="#main.py">main.py</a>
@@ -8328,7 +8532,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#cv2">cv2</a>
+    <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#cv2">cv2</a>
  &#8226;   <a href="#cv2.config">cv2.config</a>
  &#8226;   <a href="#cv2.config-3">cv2.config-3</a>
  &#8226;   <a href="#cv2.cv2">cv2.cv2</a>
@@ -8342,7 +8547,7 @@ imported by:
  &#8226;   <a href="#cv2.typing">cv2.typing</a>
  &#8226;   <a href="#cv2.utils">cv2.utils</a>
  &#8226;   <a href="#cv2.version">cv2.version</a>
- &#8226;   <a href="#main.py">main.py</a>
+ &#8226;   <a href="#utils.camera">utils.camera</a>
 
   </div>
 
@@ -13672,12 +13877,12 @@ imports:
   <div class="import">
 imported by:
     <a href="#charset_normalizer.models">charset_normalizer.models</a>
+ &#8226;   <a href="#config.settings">config.settings</a>
  &#8226;   <a href="#customtkinter.windows.widgets.theme.theme_manager">customtkinter.windows.widgets.theme.theme_manager</a>
  &#8226;   <a href="#importlib.metadata">importlib.metadata</a>
  &#8226;   <a href="#json.decoder">json.decoder</a>
  &#8226;   <a href="#json.encoder">json.encoder</a>
  &#8226;   <a href="#json.scanner">json.scanner</a>
- &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#numpy.__config__">numpy.__config__</a>
  &#8226;   <a href="#numpy.testing._private.utils">numpy.testing._private.utils</a>
  &#8226;   <a href="#setuptools._vendor.importlib_metadata">setuptools._vendor.importlib_metadata</a>
@@ -13948,6 +14153,7 @@ imported by:
  &#8226;   <a href="#setuptools._vendor.more_itertools.recipes">setuptools._vendor.more_itertools.recipes</a>
  &#8226;   <a href="#statistics">statistics</a>
  &#8226;   <a href="#urllib.parse">urllib.parse</a>
+ &#8226;   <a href="#utils.camera">utils.camera</a>
 
   </div>
 
@@ -15169,7 +15375,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#cv2">cv2</a>
+    <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#cv2">cv2</a>
  &#8226;   <a href="#cv2.mat_wrapper">cv2.mat_wrapper</a>
  &#8226;   <a href="#cv2.typing">cv2.typing</a>
  &#8226;   <a href="#numpy">numpy</a>
@@ -15259,6 +15466,7 @@ imported by:
  &#8226;   <a href="#pygame.pixelcopy">pygame.pixelcopy</a>
  &#8226;   <a href="#pygame.sndarray">pygame.sndarray</a>
  &#8226;   <a href="#pygame.surfarray">pygame.surfarray</a>
+ &#8226;   <a href="#utils.camera">utils.camera</a>
 
   </div>
 
@@ -21795,8 +22003,12 @@ imported by:
  &#8226;   <a href="#bdb">bdb</a>
  &#8226;   <a href="#bz2">bz2</a>
  &#8226;   <a href="#charset_normalizer.api">charset_normalizer.api</a>
+ &#8226;   <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#components.main_screen">components.main_screen</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#concurrent.futures.thread">concurrent.futures.thread</a>
+ &#8226;   <a href="#config.paths">config.paths</a>
+ &#8226;   <a href="#config.settings">config.settings</a>
  &#8226;   <a href="#configparser">configparser</a>
  &#8226;   <a href="#contextlib">contextlib</a>
  &#8226;   <a href="#ctypes">ctypes</a>
@@ -23201,7 +23413,9 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#main.py">main.py</a>
+    <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#pygame">pygame</a>
  &#8226;   <a href="#pygame._common">pygame._common</a>
  &#8226;   <a href="#pygame._freetype">pygame._freetype</a>
@@ -29455,6 +29669,7 @@ imported by:
  &#8226;   <a href="#codecs">codecs</a>
  &#8226;   <a href="#collections">collections</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
+ &#8226;   <a href="#config.paths">config.paths</a>
  &#8226;   <a href="#configparser">configparser</a>
  &#8226;   <a href="#contextlib">contextlib</a>
  &#8226;   <a href="#ctypes">ctypes</a>
@@ -29901,13 +30116,15 @@ imported by:
  &#8226;   <a href="#asyncio.proactor_events">asyncio.proactor_events</a>
  &#8226;   <a href="#asyncio.runners">asyncio.runners</a>
  &#8226;   <a href="#asyncio.unix_events">asyncio.unix_events</a>
+ &#8226;   <a href="#components.alarm">components.alarm</a>
+ &#8226;   <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#components.timer">components.timer</a>
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#concurrent.futures.process">concurrent.futures.process</a>
  &#8226;   <a href="#concurrent.futures.thread">concurrent.futures.thread</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#importlib.util">importlib.util</a>
  &#8226;   <a href="#logging">logging</a>
- &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#multiprocessing.context">multiprocessing.context</a>
  &#8226;   <a href="#multiprocessing.dummy">multiprocessing.dummy</a>
  &#8226;   <a href="#multiprocessing.forkserver">multiprocessing.forkserver</a>
@@ -29965,6 +30182,7 @@ imported by:
  &#8226;   <a href="#_strptime">_strptime</a>
  &#8226;   <a href="#asyncio.base_events">asyncio.base_events</a>
  &#8226;   <a href="#asyncio.windows_events">asyncio.windows_events</a>
+ &#8226;   <a href="#components.alarm">components.alarm</a>
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#datetime">datetime</a>
  &#8226;   <a href="#email._parseaddr">email._parseaddr</a>
@@ -29975,7 +30193,6 @@ imported by:
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#http.server">http.server</a>
  &#8226;   <a href="#logging">logging</a>
- &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#multiprocessing.connection">multiprocessing.connection</a>
  &#8226;   <a href="#multiprocessing.managers">multiprocessing.managers</a>
  &#8226;   <a href="#multiprocessing.pool">multiprocessing.pool</a>
@@ -30001,6 +30218,7 @@ imported by:
  &#8226;   <a href="#unittest.case">unittest.case</a>
  &#8226;   <a href="#unittest.runner">unittest.runner</a>
  &#8226;   <a href="#urllib.request">urllib.request</a>
+ &#8226;   <a href="#utils.camera">utils.camera</a>
  &#8226;   <a href="#xmlrpc.client">xmlrpc.client</a>
  &#8226;   <a href="#zipfile">zipfile</a>
  &#8226;   <a href="#zipimport">zipimport</a>
@@ -30029,7 +30247,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#customtkinter">customtkinter</a>
+    <a href="#components.main_screen">components.main_screen</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
  &#8226;   <a href="#customtkinter.windows.ctk_tk">customtkinter.windows.ctk_tk</a>
  &#8226;   <a href="#customtkinter.windows.ctk_toplevel">customtkinter.windows.ctk_toplevel</a>
  &#8226;   <a href="#customtkinter.windows.widgets.appearance_mode.appearance_mode_tracker">customtkinter.windows.widgets.appearance_mode.appearance_mode_tracker</a>
@@ -30052,7 +30271,6 @@ imported by:
  &#8226;   <a href="#customtkinter.windows.widgets.ctk_tabview">customtkinter.windows.widgets.ctk_tabview</a>
  &#8226;   <a href="#customtkinter.windows.widgets.ctk_textbox">customtkinter.windows.widgets.ctk_textbox</a>
  &#8226;   <a href="#customtkinter.windows.widgets.scaling.scaling_tracker">customtkinter.windows.widgets.scaling.scaling_tracker</a>
- &#8226;   <a href="#main.py">main.py</a>
  &#8226;   <a href="#tkinter.commondialog">tkinter.commondialog</a>
  &#8226;   <a href="#tkinter.constants">tkinter.constants</a>
  &#8226;   <a href="#tkinter.dialog">tkinter.dialog</a>
@@ -30133,8 +30351,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#customtkinter">customtkinter</a>
- &#8226;   <a href="#main.py">main.py</a>
+    <a href="#components.main_screen">components.main_screen</a>
+ &#8226;   <a href="#customtkinter">customtkinter</a>
 
   </div>
 
@@ -31355,6 +31573,62 @@ imported by:
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
     <a href="#site">site</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="utils"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/utils/__init__.py" type="text/plain"><tt>utils</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#utils.camera">utils.camera</a>
+ &#8226;   <a href="#utils.helpers">utils.helpers</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#utils.camera">utils.camera</a>
+ &#8226;   <a href="#utils.helpers">utils.helpers</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="utils.camera"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/utils/camera.py" type="text/plain"><tt>utils.camera</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#collections">collections</a>
+ &#8226;   <a href="#cv2">cv2</a>
+ &#8226;   <a href="#math">math</a>
+ &#8226;   <a href="#numpy">numpy</a>
+ &#8226;   <a href="#time">time</a>
+ &#8226;   <a href="#utils">utils</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#components.break_screen">components.break_screen</a>
+ &#8226;   <a href="#utils">utils</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="utils.helpers"></a>
+  <a target="code" href="///C:/Users/Ganesh%20R/Documents/32O/utils/helpers.py" type="text/plain"><tt>utils.helpers</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#utils">utils</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#utils">utils</a>
 
   </div>
 

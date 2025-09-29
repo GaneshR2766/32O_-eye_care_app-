@@ -1,215 +1,186 @@
-# camera.py (with visual markers restored)
-import cv2
+import cv2 
 import math
 import numpy as np
 from collections import deque
+import time
 
 class PeekingDetector:
     def __init__(self):
-        self.cap = cv2.VideoCapture(0)
-        if not self.cap.isOpened():
-            raise RuntimeError("Could not open camera")
-        
-        # Configure camera
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-        self.cap.set(cv2.CAP_PROP_FPS, 15)
+        # Camera initialization with optimized settings
+        self.cap = self._initialize_camera()
+        self.detector = self._initialize_detector()
         
         # Detection parameters
-        self.detection_window = deque(maxlen=10)
+        self.detection_window = deque(maxlen=5)
         self.required_confidence = 0.7
-        self.last_valid_face = None
+        self.last_valid_result = None
+        self.last_processed_time = 0
+        self.processing_interval = 0.033  # Target ~30 FPS processing
         
-        # Load classifiers
-        self.face_cascade = cv2.CascadeClassifier(
+        # Performance tracking
+        self.frame_count = 0
+        self.start_time = time.time()
+
+    def _initialize_camera(self):
+        cap = cv2.VideoCapture(0)
+        if not cap.isOpened():
+            raise RuntimeError("Could not open camera")
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+        cap.set(cv2.CAP_PROP_FPS, 60)
+        cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+        cap.set(cv2.CAP_PROP_BUFFERSIZE, 2)  # Reduce latency
+        return cap
+
+    def _initialize_detector(self):
+        face_cascade = cv2.CascadeClassifier(
             cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-        self.eye_cascade = cv2.CascadeClassifier(
+        eye_cascade = cv2.CascadeClassifier(
             cv2.data.haarcascades + "haarcascade_eye.xml")
-        
-    def __del__(self):
+        return {'face': face_cascade, 'eye': eye_cascade}
+
+    def release(self):
+        """Release camera safely"""
         if hasattr(self, 'cap') and self.cap.isOpened():
             self.cap.release()
-    
+            fps = self.frame_count / (time.time() - self.start_time)
+            print(f"Camera released. Average FPS: {fps:.1f}")
+
+    def __del__(self):
+        self.release()
+
     def get_face_orientation(self, face_rect, eye_centers):
-        """More robust orientation calculation"""
         x, y, w, h = face_rect
-        
-        # Calculate vertical angle (pitch)
         eyes_center_y = (eye_centers[0][1] + eye_centers[1][1]) / 2
-        chin_y = y + h
-        vertical_ratio = (eyes_center_y - y) / (chin_y - y)
-        vertical_angle = (vertical_ratio - 0.4) * 90
-        
-        # Calculate horizontal angle (yaw)
+        vertical_ratio = (eyes_center_y - y) / h
+        vertical_angle = (vertical_ratio - 0.35) * 100
         dx = eye_centers[1][0] - eye_centers[0][0]
         dy = eye_centers[1][1] - eye_centers[0][1]
         horizontal_angle = math.degrees(math.atan2(dy, dx))
-        
         return vertical_angle, horizontal_angle
-    
+
     def analyze_frame(self, frame):
-        """Improved frame analysis with better tilt handling"""
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        height, width = frame.shape[:2]
-        
         result = {
-            'frame': frame,
+            'frame': frame.copy(),
             'face_detected': False,
             'peeking': False,
             'message': "No face detected",
             'vert_angle': 0,
             'horiz_angle': 0,
-            'eye_ratio': 0
+            'landmarks': [],
+            'is_black': False
         }
-        
-        # Check if frame is too dark
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.equalizeHist(gray)
         if np.mean(gray) < 30:
-            result['message'] = "Frame too dark"
+            result['message'] = "Low lighting"
+            result['is_black'] = True
             return result
-            
-        faces = self.face_cascade.detectMultiScale(gray, 1.1, 5, minSize=(100, 100))
+        faces = self.detector['face'].detectMultiScale(gray, scaleFactor=1.05,
+                                                       minNeighbors=6, minSize=(80, 80),
+                                                       flags=cv2.CASCADE_SCALE_IMAGE)
         if len(faces) == 0:
             return result
-            
-        x, y, w, h = faces[0]  # Use largest face
+        x, y, w, h = max(faces, key=lambda f: f[2]*f[3])
         result['face_detected'] = True
-        
-        # Draw green rectangle around face
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        
-        # Eye detection with ROI
+        cv2.rectangle(result['frame'], (x, y), (x+w, y+h), (0, 255, 0), 2)
         roi_gray = gray[y:y+h, x:x+w]
-        eyes = self.eye_cascade.detectMultiScale(roi_gray, 1.1, 3, minSize=(30, 30))
-        
+        eyes = self.detector['eye'].detectMultiScale(roi_gray, scaleFactor=1.05,
+                                                     minNeighbors=5, minSize=(30, 30))
         if len(eyes) < 2:
-            result['message'] = "Not enough eyes detected"
+            result['message'] = "Eyes not detected"
             return result
-            
-        # Sort eyes by x-position (left to right)
-        eyes = sorted(eyes, key=lambda e: e[0])
-        eye_centers = [(x + ex + ew//2, y + ey + eh//2) for ex, ey, ew, eh in eyes[:2]]
-        
-        # Draw red dots for eyes
-        for (ex, ey) in eye_centers:
-            cv2.circle(frame, (ex, ey), 5, (0, 0, 255), -1)
-        
-        # Draw blue line between eyes
-        cv2.line(frame, eye_centers[0], eye_centers[1], (255, 0, 0), 2)
-        
-        # Get face orientation
-        vert_angle, horiz_angle = self.get_face_orientation((x,y,w,h), eye_centers)
+        eyes = sorted(eyes, key=lambda e: e[0])[:2]
+        eye_centers = [(x + ex + ew//2, y + ey + eh//2) for ex, ey, ew, eh in eyes]
+        result['landmarks'] = eye_centers
+        for center in eye_centers:
+            cv2.circle(result['frame'], center, 5, (0, 0, 255), -1)
+        cv2.line(result['frame'], eye_centers[0], eye_centers[1], (255, 0, 0), 2)
+        vert_angle, horiz_angle = self.get_face_orientation((x, y, w, h), eye_centers)
         result['vert_angle'] = vert_angle
         result['horiz_angle'] = horiz_angle
-        
-        # Eye position analysis
         eye_y_mean = (eye_centers[0][1] + eye_centers[1][1]) / 2
-        eye_position_ratio = (eye_y_mean - y) / h
-        result['eye_ratio'] = eye_position_ratio
-        
-        # Improved tilt detection rules
-        if abs(vert_angle) > 45:
-            result['message'] = f"Head tilted {vert_angle:.1f}°"
-            return result
-            
-        if abs(horiz_angle) > 30:
-            result['message'] = f"Head turned {horiz_angle:.1f}°"
-            return result
-            
-        # Dynamic position thresholds
-        if vert_angle > 15:  # Looking up
-            upper_threshold = 0.4 + (vert_angle / 100)
-            lower_threshold = 0.2
-        elif vert_angle < -15:  # Looking down
-            upper_threshold = 0.6
-            lower_threshold = 0.4 + (vert_angle / 100)
-        else:  # Neutral position
-            upper_threshold = 0.5
-            lower_threshold = 0.3
-            
-        if eye_position_ratio < lower_threshold:
-            result['message'] = f"Looking up (eyes: {eye_position_ratio:.2f})"
-            return result
-            
-        if eye_position_ratio > upper_threshold:
-            result['message'] = f"Looking down (eyes: {eye_position_ratio:.2f})"
-            return result
-            
-        # Only consider peeking when:
-        # - Head is relatively straight (-15° to +15° tilt)
-        # - Eyes are within neutral position
-        result['peeking'] = True
-        result['message'] = f"Potential peeking (eyes: {eye_position_ratio:.2f})"
+        eye_ratio = (eye_y_mean - y) / h
+        if abs(vert_angle) > 40 or abs(horiz_angle) > 25:
+            result['message'] = f"Head turned ({vert_angle:.1f}°, {horiz_angle:.1f}°)"
+        elif eye_ratio < 0.25:
+            result['message'] = "Looking up"
+        elif eye_ratio > 0.6:
+            result['message'] = "Looking down"
+        else:
+            result['peeking'] = True
+            result['message'] = "Looking at screen"
         return result
-    
-    def is_user_peeking(self):
-        """Smart detection with multiple frames"""
-        try:
-            analysis_results = []
-            for _ in range(5):
-                ret, frame = self.cap.read()
-                if not ret:
-                    print("[Camera] ❌ Frame capture failed")
-                    # Create black frame with error message
-                    error_frame = np.zeros((480, 640, 3), dtype=np.uint8)
-                    cv2.putText(error_frame, "Camera Error", (50, 240), 
-                               cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-                    return False, {
-                        'frame': error_frame, 
-                        'face_detected': False, 
-                        'message': "Camera error"
-                    }
-                
-                analysis = self.analyze_frame(frame)
-                self.detection_window.append(analysis['peeking'])
-                analysis_results.append(analysis)
-            
-            confidence = sum(self.detection_window) / len(self.detection_window)
-            if confidence >= self.required_confidence:
-                return True, analysis_results[-1]
-            return False, analysis_results[-1]
-            
-        except Exception as e:
-            print(f"[Camera] ⚠️ Error: {str(e)}")
-            # Create black frame with error message
-            error_frame = np.zeros((480, 640, 3), dtype=np.uint8)
-            cv2.putText(error_frame, f"Error: {str(e)}", (50, 240), 
-                       cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-            return False, {
-                'frame': error_frame, 
-                'face_detected': False, 
-                'message': f"Error: {str(e)}"
-            }
 
-# Initialize detector once at module level
-try:
-    peeking_detector = PeekingDetector()
-except RuntimeError as e:
-    print(f"Failed to initialize camera: {e}")
-    peeking_detector = None
+    def is_user_peeking(self):
+        self.frame_count += 1
+        ret, frame = self.cap.read()
+        if not ret:
+            return False, self._create_error_result("Camera error")
+        current_time = time.time()
+        if current_time - self.last_processed_time < self.processing_interval:
+            if self.last_valid_result:
+                result = self.last_valid_result.copy()
+                result['frame'] = frame
+                result['message'] = "Throttling"
+                return False, result
+            return False, self._create_default_result(frame)
+        self.last_processed_time = current_time
+        analysis = self.analyze_frame(frame)
+        self.detection_window.append(analysis['peeking'])
+        if analysis['face_detected']:
+            self.last_valid_result = analysis
+        confidence = (sum(self.detection_window) / len(self.detection_window)
+                      if self.detection_window else 0)
+        return confidence >= self.required_confidence, analysis
+
+    def _create_default_result(self, frame):
+        return {'frame': frame, 'face_detected': False, 'peeking': False,
+                'message': "Ready", 'vert_angle': 0, 'horiz_angle': 0,
+                'landmarks': []}
+
+    def _create_error_result(self, message):
+        error_frame = np.zeros((480, 640, 3), dtype=np.uint8)
+        cv2.putText(error_frame, message, (50, 240),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+        return {'frame': error_frame, 'face_detected': False, 'peeking': False,
+                'message': message, 'vert_angle': 0, 'horiz_angle': 0,
+                'landmarks': []}
+
+# Global detector instance
+detector = None
+
+def get_detector():
+    global detector
+    if detector is None:
+        try:
+            detector = PeekingDetector()
+        except Exception as e:
+            print(f"Camera init failed: {str(e)}")
+            detector = None
+    return detector
+
+def release_detector():
+    """Explicitly release camera when done"""
+    global detector
+    if detector:
+        detector.release()
+        detector = None
 
 def is_user_peeking():
-    """Public interface for peeking detection"""
-    if peeking_detector is None:
-        # Create black frame with error message
-        error_frame = np.zeros((480, 640, 3), dtype=np.uint8)
-        cv2.putText(error_frame, "Camera Not Available", (50, 240), 
-                   cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        return False, {
-            'frame': error_frame, 
-            'face_detected': False, 
-            'message': "Camera not available"
-        }
-    
+    det = get_detector()
+    if det is None:
+        return False, {'frame': np.zeros((480, 640, 3), dtype=np.uint8),
+                       'face_detected': False, 'peeking': False,
+                       'message': "Camera unavailable",
+                       'vert_angle': 0, 'horiz_angle': 0,
+                       'landmarks': []}
     try:
-        return peeking_detector.is_user_peeking()
+        return det.is_user_peeking()
     except Exception as e:
         print(f"[Camera] Critical error: {str(e)}")
-        # Create black frame with error message
-        error_frame = np.zeros((480, 640, 3), dtype=np.uint8)
-        cv2.putText(error_frame, "Detection Failed", (50, 240), 
-                   cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        return False, {
-            'frame': error_frame, 
-            'face_detected': False, 
-            'message': "Detection failed"
-        }
+        return False, {'frame': np.zeros((480, 640, 3), dtype=np.uint8),
+                       'face_detected': False, 'peeking': False,
+                       'message': "Detection error",
+                       'vert_angle': 0, 'horiz_angle': 0,
+                       'landmarks': []}

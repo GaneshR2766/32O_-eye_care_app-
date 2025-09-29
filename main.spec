@@ -1,18 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
-import os
+
 
 a = Analysis(
     ['main.py'],
-    pathex=[os.path.abspath('.')],  # ensure correct relative path resolution
+    pathex=[],
     binaries=[],
-    datas=[
-        ('assets', 'assets'),
-        ('sounds', 'sounds'),
-        ('sounds/user', 'sounds/user'),
-        ('nature/*', 'nature'),
-        ('settings.json', '.')
-    ],
-
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -21,34 +14,25 @@ a = Analysis(
     noarchive=False,
     optimize=0,
 )
-
 pyz = PYZ(a.pure)
 
 exe = EXE(
     pyz,
     a.scripts,
+    a.binaries,
+    a.datas,
     [],
-    icon='assets/icon2.ico',
-    exclude_binaries=True,
-    name='32O',
+    name='main',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    console=False,  # hides console window
+    upx_exclude=[],
+    runtime_tmpdir=None,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-)
-
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='32O',
 )

@@ -13,7 +13,7 @@ class Timer:
     def start_20min_timer(self):
         self.start_btn.configure(state="disabled")
         self.customize_btn.configure(state="disabled")
-        self.total_seconds = 5  # 20 minutes in seconds
+        self.total_seconds = 20 * 60  # 20 minutes in seconds
         self.timer_running = True
         self.timer_thread = threading.Thread(target=self.timer_countdown, daemon=True)
         self.timer_thread.start()
