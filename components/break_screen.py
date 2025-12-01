@@ -158,7 +158,7 @@ def create_alarm_overlay(app):
 
     ctk.CTkLabel(
         text_area,
-        text="Please look away from your screen for 20 seconds to reduce eye strain.",
+        text="Please look away",
         font=fonts["subtitle"],
         text_color=COLORS["text_secondary"],
         wraplength=int(420 * get_scale(app)),
@@ -238,31 +238,82 @@ def start_eye_break_main(app, reset=False):
 
         ctk.CTkLabel(
             instruction_frame,
-            text="👁 Focus ~20 feet away for 20 seconds",
+            text="👁 Focus 20 feet away for 20 seconds",
             font=fonts["subtitle"],
             text_color=COLORS["text_primary"],
             anchor="w"
         ).pack(side="left", padx=(0, 10), fill="x")
 
-        # Progress + counter combined
+        # ---------- REPLACEMENT: progress area with stacked help + message ----------
         progress_frame = ctk.CTkFrame(top_frame, fg_color="transparent", border_width=0)
         progress_frame.pack(fill="x", pady=(6, 6))
 
-        # Use a Canvas to draw a circular progress arc
+        # configure grid: column 0 -> fixed for canvas, column 1 -> expanding for text
+        progress_frame.grid_columnconfigure(0, weight=0, minsize=int(160 * get_scale(app)))  # reserve for canvas
+        progress_frame.grid_columnconfigure(1, weight=1)
+
+        # Canvas (left column)
         canvas_size = int(160 * get_scale(app))
-        canvas_wrapper = ctk.CTkFrame(progress_frame, fg_color="transparent", border_width=0)
-        canvas_wrapper.pack(side="left", padx=(0, 10))
+        canvas_wrapper = ctk.CTkFrame(progress_frame, fg_color="transparent", border_width=0, width=canvas_size, height=canvas_size)
+        canvas_wrapper.grid(row=0, column=0, sticky="nw", padx=(0, 12))
+        try:
+            canvas_wrapper.pack_propagate(False)
+            canvas_wrapper.grid_propagate(False)
+        except Exception:
+            pass
+
         canvas = Canvas(canvas_wrapper, width=canvas_size, height=canvas_size, highlightthickness=0, bg=COLORS["background"])
         canvas.pack()
 
-        # create arc & counter text
+        # create arc & counter text (slightly reduced so it fits)
         arc_id = canvas.create_arc(8, 8, canvas_size - 8, canvas_size - 8, start=90, extent=0, style="arc", width=10)
-        counter_text_id = canvas.create_text(canvas_size//2, canvas_size//2, text="20", font=(BASE_FONTS["counter"][0], int(48 * get_scale(app))), fill=COLORS["primary"])
+        counter_font_sz = max(28, int(48 * get_scale(app)) - 12)
+        counter_text_id = canvas.create_text(canvas_size//2, canvas_size//2, text="20",
+                                             font=(BASE_FONTS["counter"][0], counter_font_sz), fill=COLORS["primary"])
 
-        # right of canvas: short help text
+        # Help column (right): short help label on top, longer message below (stacked)
         help_frame = ctk.CTkFrame(progress_frame, fg_color="transparent", border_width=0)
-        help_frame.pack(side="left", fill="both", expand=True)
-        ctk.CTkLabel(help_frame, text="Keep your gaze away from the screen.", font=fonts["body"], text_color=COLORS["text_secondary"], anchor="w").pack(anchor="w", pady=(12,0))
+        help_frame.grid(row=0, column=1, sticky="nsew")
+        help_frame.grid_rowconfigure(0, weight=0)
+        help_frame.grid_rowconfigure(1, weight=1)
+
+        help_label = ctk.CTkLabel(help_frame,
+                                  text="Keep your gaze away from the screen.",
+                                  font=fonts["body"],
+                                  text_color=COLORS["text_secondary"],
+                                  anchor="w",
+                                  justify="left")
+        help_label.grid(row=0, column=0, sticky="nw", pady=(12, 4), padx=(0,0))
+
+        message_label = ctk.CTkLabel(help_frame,
+                                     text="Please look away from your screen for 20 seconds to reduce eye strain.",
+                                     font=fonts["subtitle"],
+                                     text_color=COLORS["text_secondary"],
+                                     anchor="w",
+                                     justify="left")
+        message_label.grid(row=1, column=0, sticky="nw")
+
+        # Adjust wraplength dynamically once geometry is available
+        def adjust_help_wrap():
+            try:
+                total_w = progress_frame.winfo_width() or app.winfo_width() or 1000
+                reserved = canvas_wrapper.winfo_width() or canvas_size
+                padding = 40  # extra breathing room
+                avail = max(120, total_w - reserved - padding)
+                help_label.configure(wraplength=avail)
+                message_label.configure(wraplength=avail)
+            except Exception:
+                pass
+
+        # schedule adjustment and bind resize only once (avoids duplicate bindings)
+        app.after(50, adjust_help_wrap)
+        if not getattr(app, "_eye_break_resize_bound", False):
+            def on_resize(_=None):
+                app.after(10, adjust_help_wrap)
+            app.bind("<Configure>", on_resize)
+            app._eye_break_resize_bound = True
+        # ---------------------------------------------------------------------------
+
 
         # bottom: camera preview + status bar
         bottom_frame = ctk.CTkFrame(main_frame, fg_color="transparent", border_width=0)

@@ -110,7 +110,7 @@ def load_main_screen(app):
     # === Customize Button ===
     customize_btn = ctk.CTkButton(
         card,
-        text="⚙ Customize",
+        text="⛭️Customize",
         font=("Poppins", 16),
         height=45,
         corner_radius=12,
@@ -191,7 +191,7 @@ def open_customize_window(app):
     card.pack_propagate(False)
 
     ctk.CTkLabel(
-        card, text="⚙ Customize Settings", font=fonts["title"], text_color="#1D4E89"
+        card, text="⛭\u2009Customize Settings", font=fonts["title"], text_color="#1D4E89"
     ).pack(pady=(15, 10))
 
     # Upload Section
